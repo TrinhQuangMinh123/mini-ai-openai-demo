@@ -1,0 +1,10 @@
+torch>=2.2.0
+transformers>=4.40.2
+flask>=3.0.0
+flask-cors>=4.0.0
+pyngrok>=7.1.0
+huggingface-hub>=0.22.2
+requests>=2.31.0
+python-dotenv>=1.0.0
+pytest>=8.2.0
+openai>=1.30.0
