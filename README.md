@@ -7,9 +7,11 @@ This mini repository turns the original Kaggle-only vLLM notebook into a lightwe
 - `scripts/test_client.py` – Simple client script that sends a request to the local API (or an ngrok-exposed URL).
 - `notebooks/local-openai-demo.ipynb` – Updated walk-through notebook for running the full workflow locally.
 - `tests/test_api.py` – Pytest that exercises the chat completion endpoint.
-- `requirements.txt` – Python dependencies. Install into a virtualenv with `python -m venv .venv && source .venv/bin/activate` before `pip install -r requirements.txt`.
+- `Dockerfile` – Container image that runs the API server on port 8000.
+- `Makefile` – Convenience targets for building, running, and testing.
+- `requirements.txt` – Python dependencies for local development.
 
-## Quickstart
+## Quickstart (Local Python)
 1. **Install dependencies**
    ```bash
    python -m venv .venv
@@ -33,6 +35,30 @@ This mini repository turns the original Kaggle-only vLLM notebook into a lightwe
    ```bash
    pytest
    ```
+
+## Docker Workflow
+1. **Build the image**
+   ```bash
+   make build
+   ```
+2. **Run the server** (maps host port 8000 → container 8000):
+   ```bash
+   make run
+   ```
+   Add `ENV_FILE=.env` or `RUN_ARGS="--env NGROK_AUTHTOKEN=..."` if you need to pass secrets.
+3. **Open an ngrok tunnel + smoke test (optional)**  
+   Once the server runs, you can still call `python scripts/test_client.py --use-ngrok` from your host.
+4. **Execute the test suite inside the container**
+   ```bash
+   make test
+   ```
+5. **Grab an interactive shell** (debugging):
+   ```bash
+   make shell
+   ```
+
+## Notebook Workflow
+Launch Jupyter or VS Code and open `notebooks/local-openai-demo.ipynb`. The notebook mirrors the step-by-step flow above, including launching the server, connecting ngrok, and sending both sample prompts.
 
 ## Environment Variables
 - `MODEL_REPO` – Override the default Hugging Face repo (`sshleifer/tiny-gpt2`).
